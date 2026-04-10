@@ -3,562 +3,660 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Didin - Gestor Financeiro</title>
+    <title>Meu Didin - Gestor Premium</title>
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         /* =========================================
-           SISTEMA DE CORES TEMÁTICAS
+           SISTEMA DE DESIGN PREMIUM (DESIGN TOKENS)
            ========================================= */
-        [data-color-theme="default"] {
-            --theme-primary: #6366f1; 
-            --theme-secondary: #10b981; 
-            --card-light: #ffffff; 
-            --body-light: #f3f4f6; 
-            --card-dark: #1e293b;  
-            --body-dark: #0f172a;  
-        }
-        [data-color-theme="default"] .header-bar::before, 
-        [data-color-theme="default"] .summary-card::before, 
-        [data-color-theme="default"] .card::before {
-            display: none;
+        :root {
+            --radius-sm: 12px; --radius-md: 24px; --radius-lg: 32px;
+            --transition-bounce: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --font-main: 'Inter', -apple-system, sans-serif;
+            --font-title: 'Outfit', sans-serif;
         }
 
+        /* Temas de Cores */
+        [data-color-theme="default"] {
+            --theme-primary: #0f172a; --theme-secondary: #334155; --theme-glow: rgba(15, 23, 42, 0.1);
+            --card-light: #ffffff; --body-light: #f8fafc; --card-dark: #1e293b; --body-dark: #09090b;  
+            --card-bg-gradient: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        }
         [data-color-theme="indigo"] {
-            --theme-primary: #6366f1; --theme-secondary: #10b981; 
-            --card-light: #ffffff; --body-light: #eef2ff; 
-            --card-dark: #1e2030; --body-dark: #0b0d14;
+            --theme-primary: #4f46e5; --theme-secondary: #0ea5e9; --theme-glow: rgba(79, 70, 229, 0.15);
+            --card-light: #ffffff; --body-light: #f4f6ff; --card-dark: #1e1e2f; --body-dark: #0a0a12;
+            --card-bg-gradient: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
         }
         [data-color-theme="green"] {
-            --theme-primary: #10b981; --theme-secondary: #f59e0b; 
-            --card-light: #ffffff; --body-light: #ecfdf5; 
-            --card-dark: #18241e; --body-dark: #09120e;
+            --theme-primary: #059669; --theme-secondary: #10b981; --theme-glow: rgba(16, 185, 129, 0.15);
+            --card-light: #ffffff; --body-light: #f2fbf7; --card-dark: #1a2520; --body-dark: #07100b;
+            --card-bg-gradient: linear-gradient(135deg, #047857 0%, #10b981 100%);
         }
         [data-color-theme="pink"] {
-            --theme-primary: #ec4899; --theme-secondary: #8b5cf6; 
-            --card-light: #ffffff; --body-light: #fdf2f8; 
-            --card-dark: #2b1d24; --body-dark: #170b12;
+            --theme-primary: #e11d48; --theme-secondary: #f43f5e; --theme-glow: rgba(225, 29, 72, 0.15);
+            --card-light: #ffffff; --body-light: #fff5f7; --card-dark: #2a1b20; --body-dark: #12080a;
+            --card-bg-gradient: linear-gradient(135deg, #be123c 0%, #f43f5e 100%);
         }
         [data-color-theme="purple"] {
-            --theme-primary: #8b5cf6; --theme-secondary: #ec4899; 
-            --card-light: #ffffff; --body-light: #f5f3ff; 
-            --card-dark: #241a30; --body-dark: #100b17;
+            --theme-primary: #7c3aed; --theme-secondary: #a855f7; --theme-glow: rgba(124, 58, 237, 0.15);
+            --card-light: #ffffff; --body-light: #f8f5ff; --card-dark: #221833; --body-dark: #0d0814;
+            --card-bg-gradient: linear-gradient(135deg, #6d28d9 0%, #a855f7 100%);
+        }
+        [data-color-theme="gold"] {
+            --theme-primary: #d97706; --theme-secondary: #fbbf24; --theme-glow: rgba(217, 119, 6, 0.15);
+            --card-light: #ffffff; --body-light: #fffbeb; --card-dark: #291a05; --body-dark: #140d02;
+            --card-bg-gradient: linear-gradient(135deg, #b45309 0%, #f59e0b 100%);
+        }
+        [data-color-theme="ocean"] {
+            --theme-primary: #0891b2; --theme-secondary: #2dd4bf; --theme-glow: rgba(8, 145, 178, 0.15);
+            --card-light: #ffffff; --body-light: #f0fdfa; --card-dark: #0f272a; --body-dark: #081415;
+            --card-bg-gradient: linear-gradient(135deg, #0e7490 0%, #14b8a6 100%);
+        }
+        [data-color-theme="ruby"] {
+            --theme-primary: #be123c; --theme-secondary: #fb7185; --theme-glow: rgba(190, 18, 60, 0.15);
+            --card-light: #ffffff; --body-light: #fff1f2; --card-dark: #2a0f15; --body-dark: #17080b;
+            --card-bg-gradient: linear-gradient(135deg, #9f1239 0%, #f43f5e 100%);
+        }
+        [data-color-theme="carbon"] {
+            --theme-primary: #404040; --theme-secondary: #a3a3a3; --theme-glow: rgba(64, 64, 64, 0.15);
+            --card-light: #ffffff; --body-light: #f5f5f5; --card-dark: #171717; --body-dark: #0a0a0a;
+            --card-bg-gradient: linear-gradient(135deg, #262626 0%, #737373 100%);
         }
 
+        /* Cores Modo Claro */
         body {
+            color-scheme: light; 
             --bg-body: var(--body-light); --bg-card: var(--card-light);
-            --text-main: #111827; --text-muted: #6b7280;
-            --border-color: rgba(0, 0, 0, 0.08); --input-bg: rgba(0, 0, 0, 0.03);
-            --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            --calendar-filter: invert(0); --switch-bg: #e5e7eb; --switch-ball: #ffffff;
-            --money-green: #10b981; --money-red: #ef4444;
+            --text-main: #0f172a; --text-muted: #64748b;
+            --border-color: rgba(0, 0, 0, 0.04); --input-bg: #f1f5f9;
+            --shadow-diffuse: 0 20px 40px -15px rgba(0,0,0,0.05);
+            --shadow-hover: 0 30px 60px -15px rgba(0, 0, 0, 0.08);
+            --switch-bg: #e2e8f0; --switch-ball: #ffffff;
+            --money-green: #059669; --money-red: #e11d48;
+            --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            --calendar-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E");
         }
 
+        /* Cores Modo Escuro */
         body[data-theme="dark"] {
+            color-scheme: dark;
             --bg-body: var(--body-dark); --bg-card: var(--card-dark);
             --text-main: #f8fafc; --text-muted: #94a3b8;
-            --border-color: rgba(255, 255, 255, 0.08); --input-bg: rgba(0, 0, 0, 0.2);
-            --shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-            --calendar-filter: invert(1); --switch-bg: #334155; --switch-ball: var(--theme-primary);
+            --border-color: rgba(255, 255, 255, 0.03); --input-bg: rgba(0, 0, 0, 0.3);
+            --shadow-diffuse: 0 20px 40px -15px rgba(0,0,0,0.4);
+            --shadow-hover: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+            --switch-bg: #334155; --switch-ball: #ffffff;
+            --money-green: #10b981; --money-red: #fb7185;
+            --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            --calendar-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E");
         }
 
-        * { 
-            box-sizing: border-box; margin: 0; padding: 0; 
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        /* Fundo de App */
+        #app-wrapper {
+            background-color: var(--bg-body); color: var(--text-main); 
+            transition: background-color 0.5s ease, color 0.5s ease;
+            min-height: 100vh; overflow-x: hidden; position: relative; z-index: 1;
         }
 
-        body { background-color: var(--bg-body); color: var(--text-main); padding: 2rem 1rem; }
-
-        .dashboard-container {
-            max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr;
-            gap: 1.5rem; background-color: var(--bg-body); padding: 1rem; border-radius: 20px;
+        #app-wrapper::before {
+            content: ''; position: fixed; top: -20vh; left: -10vw; width: 60vw; height: 60vh;
+            background: radial-gradient(circle, var(--theme-glow) 0%, transparent 70%);
+            z-index: -1; pointer-events: none;
         }
 
-        .header-bar, .summary-card, .card {
-            background: var(--bg-card); border-radius: 16px; box-shadow: var(--shadow); position: relative; 
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-main); -webkit-font-smoothing: antialiased; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: transparent; border-radius: 10px; }
+        *:hover::-webkit-scrollbar-thumb { background: var(--border-color); }
+        body { margin: 0; padding: 0; background-color: var(--bg-body); }
+
+        /* ANIMAÇÃO EM CASCATA */
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .stagger-1 { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+        .stagger-2 { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; opacity: 0; }
+        .stagger-3 { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards; opacity: 0; }
+        .stagger-4 { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards; opacity: 0; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* SISTEMA DE TOAST (NOTIFICAÇÃO) */
+        #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .toast { background: var(--bg-card); color: var(--text-main); padding: 14px 24px; border-radius: 30px; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 10px; box-shadow: 0 15px 30px rgba(0,0,0,0.15); border: 1px solid var(--theme-primary); animation: toastIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes toastIn { from { opacity: 0; transform: translateY(-20px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes toastOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.9); } }
+
+        /* =========================================
+           CABEÇALHO FLUTUANTE (STICKY GLASS)
+           ========================================= */
+        .header-wrapper {
+            position: sticky; top: 0; z-index: 1000; width: 100%;
+            background: rgba(var(--bg-body-rgb), 0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color); padding: 1.5rem; margin-bottom: 2rem;
+            transition: var(--transition-smooth);
         }
 
-        .header-bar::before, .summary-card::before, .card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px;
-            background: linear-gradient(90deg, var(--theme-primary), var(--theme-secondary));
-            border-top-left-radius: 16px; border-top-right-radius: 16px;
-        }
-
-        .header-bar {
-            max-width: 1100px; margin: 0 auto 1.5rem auto; display: flex; justify-content: space-between;
-            align-items: center; padding: 1.5rem 2rem; flex-wrap: wrap; gap: 1.5rem;
-        }
-
-        .header-title-group { display: flex; align-items: center; gap: 12px; }
-
-        .site-logo { width: clamp(35px, 4.5vw, 45px); height: clamp(35px, 4.5vw, 45px); fill: url(#logo-grad); }
-
-        .main-title { 
-            font-family: 'Poppins', sans-serif; font-size: clamp(2.2rem, 5vw, 3.5rem); 
-            font-weight: 800; letter-spacing: -1.5px; line-height: 1.1;
-            background: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-secondary) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text; color: transparent; margin: 0; padding-right: 1rem;
-        }
-
+        .header-bar { max-width: 1150px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+        .header-title-group { display: flex; align-items: center; gap: 16px; }
+        .site-logo { width: clamp(35px, 5vw, 45px); height: clamp(35px, 5vw, 45px); fill: url(#logo-grad); filter: drop-shadow(0 8px 16px var(--theme-glow)); }
+        .main-title { font-family: var(--font-title); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -1.5px; line-height: 1; background: linear-gradient(135deg, var(--text-main) 0%, var(--text-muted) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
         .header-controls { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; }
 
-        .theme-palette {
-            display: flex; gap: 8px; align-items: center; background: var(--input-bg);
-            padding: 8px 12px; border-radius: 20px; border: 1px solid var(--border-color);
-        }
-
-        .color-dot {
-            width: 20px; height: 20px; border-radius: 50%; cursor: pointer;
-            border: 2px solid transparent; transition: transform 0.2s, border-color 0.2s;
-            position: relative; display: flex; align-items: center; justify-content: center;
-        }
+        .theme-palette { display: flex; gap: 8px; align-items: center; background: var(--bg-card); padding: 8px 12px; border-radius: 30px; box-shadow: var(--shadow-diffuse); border: 1px solid var(--border-color); flex-wrap: wrap; justify-content: center; }
+        .color-dot { width: 20px; height: 20px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: var(--transition-bounce); display: flex; align-items: center; justify-content: center; }
+        .color-dot:hover { transform: scale(1.3); }
+        .color-dot.active { transform: scale(1.2); box-shadow: 0 0 10px var(--theme-glow); border-color: var(--bg-body);}
         
-        .color-dot:hover { transform: scale(1.15); }
-        .color-dot.active { border-color: var(--text-main); transform: scale(1.1); box-shadow: 0 0 5px rgba(0,0,0,0.2);}
-        
-        .dot-default { background: linear-gradient(135deg, #9ca3af, #6b7280); } 
-        .dot-indigo { background: linear-gradient(135deg, #6366f1, #10b981); }
-        .dot-green { background: linear-gradient(135deg, #10b981, #f59e0b); }
-        .dot-pink { background: linear-gradient(135deg, #ec4899, #8b5cf6); }
-        .dot-purple { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
+        .dot-default { background: linear-gradient(135deg, #64748b, #0f172a); } .dot-indigo { background: linear-gradient(135deg, #4f46e5, #0ea5e9); } .dot-green { background: linear-gradient(135deg, #059669, #10b981); } .dot-pink { background: linear-gradient(135deg, #e11d48, #f43f5e); } .dot-purple { background: linear-gradient(135deg, #7c3aed, #a855f7); } .dot-gold { background: linear-gradient(135deg, #d97706, #fbbf24); } .dot-ocean { background: linear-gradient(135deg, #0891b2, #2dd4bf); } .dot-ruby { background: linear-gradient(135deg, #be123c, #fb7185); } .dot-carbon { background: linear-gradient(135deg, #404040, #a3a3a3); } 
 
-        input[type="month"] {
-            padding: 10px 14px; border: 1px solid var(--border-color); background: var(--input-bg);
-            color: var(--text-main); border-radius: 8px; font-weight: 600; outline: none; font-size: 1rem;
+        .glass-btn {
+            background: var(--bg-card); color: var(--text-main); border: 2px solid transparent; padding: 12px 20px; border-radius: var(--radius-sm); font-size: 0.95rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; justify-content: center; box-shadow: var(--shadow-diffuse); transition: var(--transition-bounce); font-family: var(--font-title);
         }
-        ::-webkit-calendar-picker-indicator { filter: var(--calendar-filter); cursor: pointer; }
+        .glass-btn:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: var(--theme-primary); color: var(--theme-primary); }
+        .glass-btn svg { width: 18px; height: 18px; fill: currentColor; }
 
-        .btn-export {
-            background: transparent; color: var(--text-main); border: 1px solid var(--border-color);
-            padding: 10px 16px; border-radius: 8px; font-size: 0.95rem; font-weight: 600;
-            cursor: pointer; display: flex; align-items: center; gap: 8px; justify-content: center;
-        }
-        .btn-export:hover { background: var(--border-color); }
-        .btn-export svg { width: 18px; height: 18px; fill: currentColor; }
+        input[type="month"] { padding: 12px 16px; border: 2px solid transparent; background: var(--bg-card); color: var(--text-main); border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: var(--transition-bounce); box-shadow: var(--shadow-diffuse); font-family: var(--font-title); }
+        input[type="month"]:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: var(--theme-primary); }
+        input[type="month"]:focus { border-color: var(--theme-primary); outline: none; background: transparent; box-shadow: 0 10px 20px var(--theme-glow); transform: translateY(-2px);}
+        ::-webkit-calendar-picker-indicator { background-image: var(--calendar-icon); background-position: center; background-repeat: no-repeat; cursor: pointer; opacity: 0.5; transition: opacity 0.3s ease; }
+        ::-webkit-calendar-picker-indicator:hover { opacity: 1; }
 
-        .theme-switch { position: relative; display: inline-block; width: 58px; height: 30px; }
+        .theme-switch { position: relative; display: inline-block; width: 60px; height: 32px; margin-left: 0.5rem;}
         .theme-switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: var(--switch-bg); transition: .4s; border-radius: 34px;
-            display: flex; align-items: center; justify-content: space-between; padding: 0 7px;
-        }
-        .slider svg { width: 15px; height: 15px; fill: none; stroke: var(--text-muted); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; z-index: 1; }
-        .slider:before {
-            position: absolute; content: ""; height: 22px; width: 22px; left: 4px; bottom: 4px;
-            background-color: var(--switch-ball); transition: .4s cubic-bezier(0.4, 0.0, 0.2, 1);
-            border-radius: 50%; z-index: 2; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        input:checked + .slider:before { transform: translateX(28px); }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--switch-bg); transition: .4s; border-radius: 34px; display: flex; align-items: center; justify-content: space-between; padding: 0 8px; }
+        .slider svg { width: 14px; height: 14px; fill: none; stroke: var(--text-muted); stroke-width: 2; z-index: 1; }
+        .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 3px; bottom: 3px; background-color: var(--switch-ball); transition: .4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-radius: 50%; z-index: 2; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
+        input:checked + .slider:before { transform: translateX(28px); background-color: var(--theme-primary); }
+        input:checked + .slider svg { stroke: rgba(255,255,255,0.8); }
 
-        .card { padding: 1.5rem; }
+        /* =========================================
+           LAYOUT GRID
+           ========================================= */
+        .dashboard-container { max-width: 1150px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 2rem; background-color: transparent; padding: 0 1.5rem 2rem 1.5rem; align-items: start; }
+        .left-column { display: flex; flex-direction: column; gap: 2rem; }
+        .right-column { position: sticky; top: 8rem; height: calc(100vh - 10rem); display: flex; flex-direction: column; }
+        .card { background: var(--bg-card); border-radius: var(--radius-md); box-shadow: var(--shadow-diffuse); position: relative; border: 1px solid var(--border-color); padding: 2rem; transition: var(--transition-smooth); }
+        .card:hover { box-shadow: var(--shadow-hover); }
 
-        .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; grid-column: 1 / -1; }
-        .summary-card { padding: 1.5rem; text-align: center; }
-        .summary-card h4 { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
-        .summary-card h2 { font-size: 1.8rem; font-weight: 800; }
+        /* =========================================
+           O CARTÃO PREMIUM & SAÚDE FINANCEIRA
+           ========================================= */
+        .credit-card-ui { width: 100%; background: var(--card-bg-gradient); border-radius: var(--radius-lg); padding: 2.5rem; color: white !important; position: relative; overflow: hidden; box-shadow: 0 20px 40px var(--theme-glow), inset 0 1px 1px rgba(255,255,255,0.2); display: flex; flex-direction: column; gap: 2rem; transition: transform 0.2s ease, box-shadow 0.2s ease; border: none; cursor: default; }
+        .credit-card-ui::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.15) 0%, transparent 60%); opacity: 0; transition: opacity 0.4s ease; pointer-events: none; z-index: 2; }
+        .credit-card-ui:hover::before { opacity: 1; }
+        .credit-card-ui::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to bottom right, rgba(255,255,255,0.1) 0%, transparent 40%, transparent 100%); transform: rotate(30deg); pointer-events: none; z-index: 1; }
+        .chip-icon { position: absolute; top: 2.5rem; right: 2.5rem; width: 45px; height: 35px; background: rgba(255,255,255,0.2); border-radius: 6px; border: 1px solid rgba(255,255,255,0.3); background-image: linear-gradient(90deg, transparent 40%, rgba(255,255,255,0.2) 50%, transparent 60%); z-index: 3; }
+
+        .balance-info { z-index: 3; position: relative;}
+        .balance-info h4 { font-size: 1rem; color: rgba(255,255,255,0.7); margin-bottom: 0.5rem; font-weight: 500; letter-spacing: 1px;}
+        .balance-info h2 { font-family: var(--font-title); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; letter-spacing: -2px; }
+
+        .card-bottom-row { display: flex; justify-content: space-between; align-items: flex-end; z-index: 3; position: relative; flex-wrap: wrap; gap: 1rem;}
+        .sub-cards { display: flex; gap: 2rem; }
+        .sub-item { display: flex; flex-direction: column; gap: 4px; }
+        .sub-item h4 { font-size: 0.85rem; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;}
+        .sub-item p { font-family: var(--font-title); font-size: 1.4rem; font-weight: 700; color: white; }
+
+        .health-indicator { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 200px; margin-top: auto;}
+        .health-indicator-header { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 600; color: rgba(255,255,255,0.8);}
+        .health-bar-bg { width: 100%; height: 6px; background: rgba(0,0,0,0.3); border-radius: 10px; overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);}
+        .health-bar-fill { height: 100%; background: #10b981; border-radius: 10px; transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s; width: 0%; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);}
+
+        /* =========================================
+           FORMULÁRIO, GRÁFICO E LISTA
+           ========================================= */
+        .section-title { font-family: var(--font-title); font-size: 1.3rem; font-weight: 800; margin-bottom: 1.8rem; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
+        .section-title svg { stroke: var(--theme-primary); stroke-width: 2.5; }
+        .chart-wrapper { height: 280px; display: flex; justify-content: center; align-items: center;}
+
+        form { display: flex; flex-direction: column; gap: 1.2rem; }
+        .form-row { display: flex; gap: 1.2rem; }
+        .form-row > div { flex: 1; }
+        label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.5rem; display: block; margin-left: 4px;}
+        input, select { width: 100%; padding: 16px 20px; border: 2px solid transparent; background-color: var(--input-bg); color: var(--text-main); border-radius: var(--radius-sm); font-size: 1rem; outline: none; transition: var(--transition-bounce); font-weight: 500; font-family: var(--font-main); }
+        input::placeholder { color: var(--text-muted); opacity: 0.6; font-weight: 400;}
+        input:focus, select:focus { border-color: var(--theme-primary); background-color: transparent; box-shadow: 0 10px 20px var(--theme-glow); transform: translateY(-2px); }
+        select { -webkit-appearance: none; -moz-appearance: none; appearance: none; background-image: var(--select-arrow); background-repeat: no-repeat; background-position: right 16px center; padding-right: 48px; cursor: pointer; }
+        select option { background-color: var(--bg-card); color: var(--text-main); font-weight: 500; padding: 10px; }
+
+        .btn-primary { background: var(--theme-primary); color: white; border: none; padding: 18px; border-radius: var(--radius-sm); font-size: 1.1rem; font-weight: 700; font-family: var(--font-title); letter-spacing: 0.5px; cursor: pointer; margin-top: 1rem; transition: var(--transition-bounce); box-shadow: 0 10px 20px var(--theme-glow); position: relative; overflow: hidden; }
+        .btn-primary::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transform: skewX(-20deg); transition: 0s; }
+        .btn-primary:hover { transform: translateY(-4px); box-shadow: 0 15px 25px var(--theme-glow); filter: brightness(1.1);}
+        .btn-primary:hover::after { left: 200%; transition: 0.7s ease-in-out; }
+
+        .list { flex-grow: 1; overflow-y: auto; height: 0; list-style: none; padding-right: 5px; display: flex; flex-direction: column; gap: 12px; min-height: 250px; }
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .list li { background: var(--bg-body); border-radius: var(--radius-sm); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; position: relative; overflow: hidden; border: 1px solid transparent; transition: var(--transition-bounce); animation: slideInUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; flex-shrink: 0; }
+        .list li:hover { background: var(--bg-card); border-color: var(--border-color); transform: scale(1.02); box-shadow: var(--shadow-diffuse); cursor: default;}
+        .list li::after { content: ''; position: absolute; width: 100%; height: 100%; top: 0; left: -100%; background: linear-gradient(90deg, transparent, var(--theme-glow), transparent); transition: 0.5s; pointer-events: none;}
+        .list li:hover::after { left: 100%; }
+        .list li .indicator { width: 8px; height: 8px; border-radius: 50%; position: absolute; left: 16px; }
+        .list li.plus .indicator { background-color: var(--money-green); box-shadow: 0 0 10px var(--money-green);}
+        .list li.minus .indicator { background-color: var(--money-red); box-shadow: 0 0 10px var(--money-red);}
+
+        .transaction-details { display: flex; flex-direction: column; gap: 4px; padding-left: 20px;}
+        .transaction-title { font-weight: 700; font-size: 1.05rem; color: var(--text-main); font-family: var(--font-title);}
+        .transaction-meta { display: flex; gap: 12px; font-size: 0.8rem; color: var(--text-muted); align-items: center; font-weight: 500;}
+        .category-tag { background: var(--input-bg); color: var(--text-main); padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 0.75rem; display: flex; align-items: center; gap: 6px; }
+        .category-tag svg { width: 12px; height: 12px; fill: currentColor; }
         
+        .transaction-amount { font-weight: 800; font-size: 1.15rem; font-family: var(--font-title); transition: var(--transition-smooth); }
         .text-green { color: var(--money-green) !important; }
         .text-red { color: var(--money-red) !important; }
 
-        .chart-wrapper { height: 250px; position: relative; display: flex; justify-content: center; align-items: center;}
-        .section-title { font-size: 1.1rem; margin-bottom: 1.2rem; font-weight: 600; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; color: var(--text-muted); }
+        .delete-btn { background: rgba(225, 29, 72, 0.1); color: var(--money-red); border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; position: absolute; right: 20px; opacity: 0; transform: scale(0.5); transition: var(--transition-bounce); z-index: 2; }
+        .delete-btn:hover { background: var(--money-red); color: white; transform: scale(1.1) rotate(5deg); }
+        .delete-btn svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2.5; fill: none; }
+        .list li:hover .delete-btn { opacity: 1; transform: scale(1); }
+        .list li:hover .transaction-amount { opacity: 0; transform: translateX(20px);}
 
-        form { display: flex; flex-direction: column; gap: 1rem; }
-        .form-row { display: flex; gap: 1rem; }
-        .form-row > div { flex: 1; }
-        label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.3rem; display: block;}
-        
-        input, select { 
-            width: 100%; padding: 12px; border: 1px solid var(--border-color); 
-            background-color: var(--input-bg); color: var(--text-main);
-            border-radius: 10px; font-size: 0.95rem; outline: none; 
-        }
-
-        input:focus, select:focus { border-color: var(--theme-primary); box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05); }
-
-        .btn { 
-            background: var(--theme-primary); color: white; border: none; 
-            padding: 14px; border-radius: 10px; font-size: 1rem; 
-            font-weight: 600; cursor: pointer; margin-top: 0.5rem;
-        }
-        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
-
-        .list { list-style: none; max-height: 400px; overflow-y: auto; padding-right: 5px; }
-        .list::-webkit-scrollbar { width: 6px; }
-        .list::-webkit-scrollbar-track { background: transparent; }
-        .list::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
-
-        .list li { 
-            background: var(--input-bg); border: 1px solid var(--border-color);
-            border-radius: 10px; padding: 12px; display: flex; 
-            justify-content: space-between; align-items: center;
-            margin-bottom: 10px; position: relative;
-        }
-
-        .list li.plus { border-left: 4px solid var(--money-green); }
-        .list li.minus { border-left: 4px solid var(--money-red); }
-
-        .transaction-details { display: flex; flex-direction: column; gap: 4px; }
-        .transaction-title { font-weight: 600; font-size: 0.95rem; }
-        .transaction-meta { display: flex; gap: 8px; font-size: 0.75rem; color: var(--text-muted); align-items: center; flex-wrap: wrap; }
-        
-        .category-tag { 
-            background: var(--border-color); color: var(--text-main);
-            padding: 3px 10px; border-radius: 12px; font-weight: 500; 
-            display: flex; align-items: center; gap: 5px; 
-        }
-
-        .category-tag svg { width: 13px; height: 13px; fill: currentColor; display: inline-block; }
-        .transaction-amount { font-weight: 700; font-size: 1rem; }
-
-        .delete-btn { 
-            background: var(--money-red); color: white; border: none; 
-            padding: 5px 10px; border-radius: 6px; font-size: 0.75rem; 
-            cursor: pointer; position: absolute; right: 12px; opacity: 0;
-        }
-
-        .list li:hover .delete-btn { opacity: 1; }
-        .list li:hover .transaction-amount { opacity: 0; }
-        .transaction-amount, .delete-btn { transition: opacity 0.2s ease; }
-        .empty-msg { text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-top: 2rem; }
+        .empty-state { text-align: center; padding: 4rem 1rem; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+        .empty-state svg { width: 80px; height: 80px; opacity: 0.2; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;}
+        .empty-state p { font-size: 1.1rem; font-weight: 500; font-family: var(--font-title);}
 
         /* =========================================
-           RESPONSIVIDADE (MOBILE)
+           RESPONSIVIDADE PREMIUM
            ========================================= */
-        @media (max-width: 768px) {
-            body { padding: 1rem 0.5rem; }
-            .dashboard-container { grid-template-columns: 1fr; padding: 0.5rem; gap: 1rem; }
-            
-            .header-bar { flex-direction: column; padding: 1.5rem 1rem; text-align: center; }
-            .header-title-group { justify-content: center; width: 100%; margin-bottom: 0.5rem; }
-            .header-controls { justify-content: center; width: 100%; gap: 1rem; }
-            
-            .btn-export { width: 100%; padding: 12px; }
-            input[type="month"] { width: 100%; text-align: center; }
-            
-            /* Cards de Resumo */
-            .summary-grid { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
-            .summary-grid .summary-card:first-child { grid-column: 1 / -1; } /* Saldo ocupa a linha toda */
-            .summary-card { padding: 1.2rem; }
-            .summary-card h2 { font-size: 1.5rem; }
-
-            /* Formulário */
-            .form-row { flex-direction: column; gap: 1rem; }
-            
-            /* Lista de Transações - Ajuste para Toque (Touch) */
-            .list li { flex-wrap: wrap; gap: 10px; padding: 14px 12px; }
-            .transaction-details { width: 100%; }
-            .transaction-amount { flex: 1; align-self: center; }
-            .delete-btn { 
-                position: relative; 
-                right: 0; 
-                opacity: 1; /* Sempre visível no mobile */
-                padding: 8px 16px;
-                font-size: 0.85rem;
-                border-radius: 8px;
-            }
-            .list li:hover .transaction-amount { opacity: 1; } /* Impede que o valor suma ao tocar na tela */
+        @media (max-width: 900px) {
+            .header-wrapper { padding: 1rem; margin-bottom: 1rem; }
+            .dashboard-container { grid-template-columns: 1fr; gap: 1.5rem; padding: 0 1rem 2rem 1rem; }
+            .right-column { position: relative; top: auto; height: auto; }
+            .list { height: auto; max-height: 500px; } 
+            .header-bar { flex-direction: column; padding: 0; }
+            .header-title-group { align-self: flex-start; }
+            .header-controls { justify-content: space-between; width: 100%; }
+            .glass-btn, input[type="month"] { flex: 1; text-align: center; justify-content: center;}
+            .theme-palette { order: -1; width: 100%; }
+            .credit-card-ui { padding: 2rem; }
+            .chip-icon { top: 1.5rem; right: 1.5rem; width: 35px; height: 25px; }
+            .balance-info h2 { font-size: 3rem; }
+            .card-bottom-row { flex-direction: column; align-items: flex-start; gap: 2rem;}
+            .sub-cards { width: 100%; justify-content: space-between; }
+            .health-indicator { max-width: 100%; }
+            .form-row { flex-direction: column; gap: 1.2rem; }
+            .list li { padding: 16px; flex-direction: column; align-items: flex-start; gap: 12px; }
+            .transaction-details { width: 100%; padding-left: 12px;}
+            .transaction-amount { margin-left: 12px;}
+            .list li:hover .transaction-amount { opacity: 1; transform: translateX(0); } 
+            .delete-btn { position: relative; right: auto; opacity: 1; transform: scale(1); width: auto; height: auto; border-radius: var(--radius-sm); padding: 10px 20px; background: rgba(225, 29, 72, 0.1); color: var(--money-red); align-self: flex-end; margin-top: -45px; gap: 8px; font-weight: 700; font-family: var(--font-title); }
+            .delete-btn::after { content: 'Apagar'; }
+            .delete-btn:hover { transform: translateY(-2px); }
         }
     </style>
 </head>
 <body data-color-theme="default">
 
-    <div class="header-bar">
-        
-        <div class="header-title-group">
-            <svg class="site-logo" viewBox="0 0 24 24">
-                <defs>
-                    <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:var(--theme-primary);stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:var(--theme-secondary);stop-opacity:1" />
-                    </linearGradient>
-                </defs>
-                <path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.11.89-2 2-2h14c1.1 0 2 .89 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
-            </svg>
-            <h1 class="main-title">Meu Didin</h1>
-        </div>
-        
-        <div class="header-controls">
-            <div class="theme-palette" data-html2canvas-ignore="true" title="Escolha seu tema">
-                <div class="color-dot dot-default active" data-theme-val="default" title="Padrão (Sem Tema)">
-                    <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; color: white; opacity: 0.9;">
-                        <path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+    <div id="app-wrapper">
+
+        <div id="toast-container" data-html2canvas-ignore="true"></div>
+
+        <div class="header-wrapper stagger-1">
+            <div class="header-bar">
+                <div class="header-title-group">
+                    <svg class="site-logo" viewBox="0 0 24 24">
+                        <defs><linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:var(--theme-primary);stop-opacity:1" /><stop offset="100%" style="stop-color:var(--theme-secondary);stop-opacity:1" /></linearGradient></defs>
+                        <path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.11.89-2 2-2h14c1.1 0 2 .89 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
                     </svg>
+                    <h1 class="main-title">Meu Didin</h1>
                 </div>
-                <div class="color-dot dot-indigo" data-theme-val="indigo" title="Índigo"></div>
-                <div class="color-dot dot-green" data-theme-val="green" title="Esmeralda"></div>
-                <div class="color-dot dot-pink" data-theme-val="pink" title="Rosa Choque"></div>
-                <div class="color-dot dot-purple" data-theme-val="purple" title="Violeta"></div>
-            </div>
-
-            <button id="btn-export" class="btn-export">
-                <svg viewBox="0 0 24 24"><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z"></path></svg>
-                Exportar JPG
-            </button>
-
-            <input type="month" id="month-filter" title="Filtrar por mês">
-            
-            <div class="theme-switch-wrapper" data-html2canvas-ignore="true" title="Modo Claro/Escuro">
-                <label class="theme-switch">
-                    <input type="checkbox" id="theme-toggle">
-                    <div class="slider">
-                        <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                
+                <div class="header-controls">
+                    <div class="theme-palette" title="Escolher Tema">
+                        <div class="color-dot dot-default active" data-theme-val="default"><svg viewBox="0 0 24 24" style="width: 12px; height: 12px; color: white;"><path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></div>
+                        <div class="color-dot dot-indigo" data-theme-val="indigo"></div>
+                        <div class="color-dot dot-green" data-theme-val="green"></div>
+                        <div class="color-dot dot-pink" data-theme-val="pink"></div>
+                        <div class="color-dot dot-purple" data-theme-val="purple"></div>
+                        <div class="color-dot dot-gold" data-theme-val="gold"></div>
+                        <div class="color-dot dot-ocean" data-theme-val="ocean"></div>
+                        <div class="color-dot dot-ruby" data-theme-val="ruby"></div>
+                        <div class="color-dot dot-carbon" data-theme-val="carbon"></div>
                     </div>
-                </label>
-            </div>
-        </div>
-    </div>
 
-    <div class="dashboard-container" id="dashboard-content">
-        <div class="summary-grid">
-            <div class="summary-card">
-                <h4>Saldo do Mês</h4>
-                <h2 id="balance">R$ 0,00</h2>
-            </div>
-            <div class="summary-card">
-                <h4>Receitas</h4>
-                <h2 id="money-plus" class="text-green">+ R$ 0,00</h2>
-            </div>
-            <div class="summary-card">
-                <h4>Despesas</h4>
-                <h2 id="money-minus" class="text-red">- R$ 0,00</h2>
+                    <input type="month" id="month-filter">
+
+                    <button id="btn-export" class="glass-btn" title="Salvar Resumo Mês">
+                        <svg viewBox="0 0 24 24"><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z"></path></svg>
+                        <span>Exportar</span>
+                    </button>
+                    
+                    <div class="theme-switch-wrapper">
+                        <label class="theme-switch">
+                            <input type="checkbox" id="theme-toggle">
+                            <div class="slider">
+                                <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                            </div>
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-            <div class="card">
-                <h3 class="section-title">Análise de Gastos</h3>
-                <div class="chart-wrapper"><canvas id="expenseChart"></canvas></div>
+        <div class="dashboard-container" id="dashboard-content">
+            <div class="left-column">
+                
+                <div class="credit-card-ui stagger-2" id="credit-card">
+                    <div class="chip-icon"></div>
+                    <div class="balance-info">
+                        <h4>Saldo Disponível</h4>
+                        <h2 id="balance">R$ 0,00</h2>
+                    </div>
+                    
+                    <div class="card-bottom-row">
+                        <div class="sub-cards">
+                            <div class="sub-item">
+                                <h4>Entradas</h4>
+                                <p id="money-plus">+ R$ 0,00</p>
+                            </div>
+                            <div class="sub-item">
+                                <h4>Saídas</h4>
+                                <p id="money-minus" style="opacity: 0.8;">- R$ 0,00</p>
+                            </div>
+                        </div>
+
+                        <div class="health-indicator" title="Porcentagem de entradas gastas no mês">
+                            <div class="health-indicator-header">
+                                <span>Saúde Financeira</span>
+                                <span id="health-percentage">0%</span>
+                            </div>
+                            <div class="health-bar-bg">
+                                <div class="health-bar-fill" id="health-bar-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card stagger-3">
+                    <h3 class="section-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+                        Análise de Gastos
+                    </h3>
+                    <div class="chart-wrapper"><canvas id="expenseChart"></canvas></div>
+                </div>
+
+                <div class="card stagger-4">
+                    <h3 class="section-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Nova Transação
+                    </h3>
+                    <form id="form">
+                        <div class="form-row">
+                            <div>
+                                <label>Tipo</label>
+                                <select id="type"><option value="expense">Saída (Despesa)</option><option value="income">Entrada (Receita)</option></select>
+                            </div>
+                            <div><label>Categoria</label><select id="category" required></select></div>
+                        </div>
+                        <div>
+                            <label>Descrição</label>
+                            <input type="text" id="text" placeholder="Ex: Netflix, Ifood, Tênis..." autocomplete="off" required />
+                        </div>
+                        <div class="form-row">
+                            <div><label>Valor</label><input type="text" inputmode="numeric" id="amount" placeholder="R$ 0,00" required autocomplete="off"/></div>
+                            <div><label>Data</label><input type="date" id="date" required /></div>
+                        </div>
+                        <button class="btn-primary">Adicionar Transação</button>
+                    </form>
+                </div>
             </div>
 
-            <div class="card" data-html2canvas-ignore="true">
-                <h3 class="section-title">Nova Transação</h3>
-                <form id="form">
-                    <div class="form-row">
-                        <div>
-                            <label for="type">Tipo</label>
-                            <select id="type">
-                                <option value="expense">Saída (Despesa)</option>
-                                <option value="income">Entrada (Receita)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="category">Categoria</label>
-                            <select id="category" required></select>
-                        </div>
-                    </div>
-                    <div>
-                        <label for="text">Descrição</label>
-                        <input type="text" id="text" placeholder="Ex: Jogo novo, Blusa, Mercado..." autocomplete="off" required />
-                    </div>
-                    <div class="form-row">
-                        <div>
-                            <label for="amount">Valor (R$)</label>
-                            <input type="number" id="amount" placeholder="0.00" step="0.01" min="0.01" required />
-                        </div>
-                        <div>
-                            <label for="date">Data</label>
-                            <input type="date" id="date" required />
-                        </div>
-                    </div>
-                    <button class="btn">Salvar Transação</button>
-                </form>
+            <div class="card right-column stagger-2">
+                <h3 class="section-title">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                    Histórico
+                </h3>
+                <div id="empty-state" class="empty-state">
+                    <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                    <p>Nenhuma transação neste mês.</p>
+                </div>
+                <ul id="list" class="list"></ul>
             </div>
         </div>
-
-        <div class="card">
-            <h3 class="section-title">Histórico</h3>
-            <p id="empty-msg" class="empty-msg">Nenhuma transação neste mês.</p>
-            <ul id="list" class="list"></ul>
-        </div>
-    </div>
-
-    <script>
+    </div> <script>
         const categoriesData = {
-            expense: {
-                "Alimentação": `<svg viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"></path></svg>`,
-                "Moradia": `<svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>`,
-                "Transporte": `<svg viewBox="0 0 24 24"><path d="M21.5 9h-2.1l-1.6-4.9c-.3-.8-1-1.3-1.8-1.3H8c-.8 0-1.5.5-1.8 1.3L4.6 9H2.5c-.8 0-1.5.7-1.5 1.5v9c0 .8.7 1.5 1.5 1.5h19c.8 0 1.5-.7 1.5-1.5v-9c0-.8-.7-1.5-1.5-1.5zm-13.3-4.2c.1-.2.3-.3.4-.3h8.8c.2 0 .3.1.4.3L19 9H5l1.2-4.2zM21 18H3v-7h18v7zm-5-3.5c0 1.4 1.1 2.5 2.5 2.5s2.5-1.1 2.5-2.5S19.9 12 18.5 12 16 13.1 16 14.5zM3 14.5C3 15.9 4.1 17 5.5 17S8 15.9 8 14.5 6.9 12 5.5 12 3 13.1 3 14.5z"></path></svg>`,
-                "Lazer": `<svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 10H3V8h18v8zM17 11c0 .6-.4 1-1 1s-1-.4-1-1 .4-1 1-1 1 .4 1 1zm-1-3c.6 0 1 .4 1 1s-.4 1-1 1-1-.4-1-1 .4-1 1-1zm3 3c0 .6-.4 1-1 1s-1-.4-1-1 .4-1 1-1 1 .4 1 1zm-1-3c.6 0 1 .4 1 1s-.4 1-1 1-1-.4-1-1 .4-1 1-1zM5.5 14c.8 0 1.5-.7 1.5-1.5s-.7-1.5-1.5-1.5-1.5.7-1.5 1.5.7 1.5 1.5 1.5zm6.5-1.5c0 .8-.7 1.5-1.5 1.5h-2c-.8 0-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5h2c.8 0 1.5.7 1.5 1.5z"></path></svg>`,
-                "Jogos": `<svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"></path></svg>`,
-                "Roupas": `<svg viewBox="0 0 24 24"><path d="M20.3 5.3l-4.8-2.3L12 1.5 8.5 3 3.7 5.3C3.3 5.5 3 5.9 3 6.4v3.2c0 .8.7 1.4 1.5 1.4h.5v10c0 .6.4 1 1 1h12c.6 0 1-.4 1-1V11h.5c.8 0 1.5-.6 1.5-1.4V6.4c0-.5-.3-.9-.7-1.1zM11 4h2v2h-2V4z"></path></svg>`,
-                "Maquiagem": `<svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8.5 12.5L9 19l-1.5-3.5L4 14l3.5-1.5L9 9l1.5 3.5L14 14l-3.5 1.5zm6-5L15 13l-1.5-2.5L11 9l2.5-1.5L15 5l1.5 2.5L19 9l-2.5 1.5z"></path></svg>`,
-                "Saúde": `<svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-3-8.5c0-.8-.7-1.5-1.5-1.5H13V7.5c0-.8-.7-1.5-1.5-1.5h-2c-.8 0-1.5.7-1.5 1.5V9H6.5c-.8 0-1.5.7-1.5 1.5v2c0 .8.7 1.5 1.5 1.5H8v1.5c0 .8.7 1.5 1.5 1.5h2c.8 0 1.5-.7 1.5-1.5V13h1.5c.8 0 1.5-.7 1.5-1.5v-2z"></path></svg>`,
-                "Educação": `<svg viewBox="0 0 24 24"><path d="M12 3 1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"></path></svg>`,
-                "Assinaturas": `<svg viewBox="0 0 24 24"><path d="M21 3H3c-1.11 0-2 .89-2 2v12c0 1.1.89 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.11-.9-2-2-2zm0 14H3V5h18v12zm-5-6l-7 4V7l7 4z"></path></svg>`,
-                "Outros": `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"></path></svg>`
-            },
-            income: {
-                "Salário": `<svg viewBox="0 0 24 24"><path d="M20 6H4v2h16V6zm0 4H4v2h16v-2zm0 4H4v2h16v-2zM4 18h16v2H4v-2z"></path></svg>`,
-                "Investimentos": `<svg viewBox="0 0 24 24"><path d="M11 17h2v-7h-2v7zm4 0h2v-4h-2v4zM9 17h2v-3H9v3zm11-14v2h-8v14c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h14z"></path></svg>`,
-                "Vendas": `<svg viewBox="0 0 24 24"><path d="M12 2l-5.5 9h11L12 2zm0 3.84L13.93 9h-3.86L12 5.84zM17.5 13c-2.49 0-4.5 2.01-4.5 4.5s2.01 4.5 4.5 4.5 4.5-2.01 4.5-4.5-2.01-4.5-4.5-4.5zm0 7c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5zM3 21.5h11v-2H3v2zm0-4h11v-2H3v2zm0-4h11v-2H3v2z"></path></svg>`,
-                "Freelance": `<svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7z"></path></svg>`,
-                "Outros": `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"></path></svg>`
-            }
+            expense: { "Alimentação": `<svg viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"></path></svg>`, "Moradia": `<svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>`, "Transporte": `<svg viewBox="0 0 24 24"><path d="M21.5 9h-2.1l-1.6-4.9c-.3-.8-1-1.3-1.8-1.3H8c-.8 0-1.5.5-1.8 1.3L4.6 9H2.5c-.8 0-1.5.7-1.5 1.5v9c0 .8.7 1.5 1.5 1.5h19c.8 0 1.5-.7 1.5-1.5v-9c0-.8-.7-1.5-1.5-1.5zm-13.3-4.2c.1-.2.3-.3.4-.3h8.8c.2 0 .3.1.4.3L19 9H5l1.2-4.2zM21 18H3v-7h18v7zm-5-3.5c0 1.4 1.1 2.5 2.5 2.5s2.5-1.1 2.5-2.5S19.9 12 18.5 12 16 13.1 16 14.5zM3 14.5C3 15.9 4.1 17 5.5 17S8 15.9 8 14.5 6.9 12 5.5 12 3 13.1 3 14.5z"></path></svg>`, "Lazer": `<svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 10H3V8h18v8zM17 11c0 .6-.4 1-1 1s-1-.4-1-1 .4-1 1-1 1 .4 1 1zm-1-3c.6 0 1 .4 1 1s-.4 1-1 1-1-.4-1-1 .4-1 1-1zm3 3c0 .6-.4 1-1 1s-1-.4-1-1 .4-1 1-1 1 .4 1 1zm-1-3c.6 0 1 .4 1 1s-.4 1-1 1-1-.4-1-1 .4-1 1-1zM5.5 14c.8 0 1.5-.7 1.5-1.5s-.7-1.5-1.5-1.5-1.5.7-1.5 1.5.7 1.5 1.5 1.5zm6.5-1.5c0 .8-.7 1.5-1.5 1.5h-2c-.8 0-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5h2c.8 0 1.5.7 1.5 1.5z"></path></svg>`, "Jogos": `<svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"></path></svg>`, "Roupas": `<svg viewBox="0 0 24 24"><path d="M20.3 5.3l-4.8-2.3L12 1.5 8.5 3 3.7 5.3C3.3 5.5 3 5.9 3 6.4v3.2c0 .8.7 1.4 1.5 1.4h.5v10c0 .6.4 1 1 1h12c.6 0 1-.4 1-1V11h.5c.8 0 1.5-.6 1.5-1.4V6.4c0-.5-.3-.9-.7-1.1zM11 4h2v2h-2V4z"></path></svg>`, "Maquiagem": `<svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8.5 12.5L9 19l-1.5-3.5L4 14l3.5-1.5L9 9l1.5 3.5L14 14l-3.5 1.5zm6-5L15 13l-1.5-2.5L11 9l2.5-1.5L15 5l1.5 2.5L19 9l-2.5 1.5z"></path></svg>`, "Saúde": `<svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-3-8.5c0-.8-.7-1.5-1.5-1.5H13V7.5c0-.8-.7-1.5-1.5-1.5h-2c-.8 0-1.5.7-1.5 1.5V9H6.5c-.8 0-1.5.7-1.5 1.5v2c0 .8.7 1.5 1.5 1.5H8v1.5c0 .8.7 1.5 1.5 1.5h2c.8 0 1.5-.7 1.5-1.5V13h1.5c.8 0 1.5-.7 1.5-1.5v-2z"></path></svg>`, "Educação": `<svg viewBox="0 0 24 24"><path d="M12 3 1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"></path></svg>`, "Assinaturas": `<svg viewBox="0 0 24 24"><path d="M21 3H3c-1.11 0-2 .89-2 2v12c0 1.1.89 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.11-.9-2-2-2zm0 14H3V5h18v12zm-5-6l-7 4V7l7 4z"></path></svg>`, "Outros": `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"></path></svg>` },
+            income: { "Salário": `<svg viewBox="0 0 24 24"><path d="M20 6H4v2h16V6zm0 4H4v2h16v-2zm0 4H4v2h16v-2zM4 18h16v2H4v-2z"></path></svg>`, "Investimentos": `<svg viewBox="0 0 24 24"><path d="M11 17h2v-7h-2v7zm4 0h2v-4h-2v4zM9 17h2v-3H9v3zm11-14v2h-8v14c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h14z"></path></svg>`, "Vendas": `<svg viewBox="0 0 24 24"><path d="M12 2l-5.5 9h11L12 2zm0 3.84L13.93 9h-3.86L12 5.84zM17.5 13c-2.49 0-4.5 2.01-4.5 4.5s2.01 4.5 4.5 4.5 4.5-2.01 4.5-4.5-2.01-4.5-4.5-4.5zm0 7c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5zM3 21.5h11v-2H3v2zm0-4h11v-2H3v2zm0-4h11v-2H3v2z"></path></svg>`, "Freelance": `<svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7z"></path></svg>`, "Outros": `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"></path></svg>` }
         };
 
-        const categoryColors = {
-            "Alimentação": "#f59e0b", "Moradia": "#3b82f6", "Transporte": "#6366f1", 
-            "Lazer": "#ef4444", "Saúde": "#10b981", "Educação": "#06b6d4",
-            "Jogos": "#8b5cf6", "Maquiagem": "#ec4899", "Roupas": "#f43f5e",
-            "Assinaturas": "#f97316", "Outros": "#6b7280"
-        };
+        const categoryColors = { "Alimentação": "#f59e0b", "Moradia": "#3b82f6", "Transporte": "#6366f1", "Lazer": "#ef4444", "Saúde": "#10b981", "Educação": "#06b6d4", "Jogos": "#8b5cf6", "Maquiagem": "#ec4899", "Roupas": "#f43f5e", "Assinaturas": "#f97316", "Outros": "#94a3b8" };
 
-        const balance = document.getElementById('balance');
-        const money_plus = document.getElementById('money-plus');
-        const money_minus = document.getElementById('money-minus');
+        const balanceDOM = document.getElementById('balance');
+        const moneyPlusDOM = document.getElementById('money-plus');
+        const moneyMinusDOM = document.getElementById('money-minus');
         const list = document.getElementById('list');
         const form = document.getElementById('form');
         const text = document.getElementById('text');
-        const amount = document.getElementById('amount');
+        const amountInput = document.getElementById('amount');
         const dateInput = document.getElementById('date');
         const typeSelect = document.getElementById('type');
         const categorySelect = document.getElementById('category');
         const monthFilter = document.getElementById('month-filter');
-        const emptyMsg = document.getElementById('empty-msg');
+        const emptyState = document.getElementById('empty-state');
         let myChart = null;
 
-        // 1. Dark / Light Mode
-        const themeToggleCheckbox = document.getElementById('theme-toggle');
-        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        let currentMode = localStorage.getItem('themeMode') || (prefersDarkScheme ? 'dark' : 'light');
+        let currentBalance = 0; let currentIncome = 0; let currentExpense = 0;
 
-        function applyMode(mode) {
-            document.body.setAttribute('data-theme', mode);
-            themeToggleCheckbox.checked = mode === 'dark';
-            localStorage.setItem('themeMode', mode);
-            if (myChart) updateUI();
-        }
+        // Temas
+        const themeToggleCheckbox = document.getElementById('theme-toggle');
+        let currentMode = localStorage.getItem('themeMode') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        function applyMode(mode) { document.body.setAttribute('data-theme', mode); themeToggleCheckbox.checked = mode === 'dark'; localStorage.setItem('themeMode', mode); if (myChart) updateUI(); }
         applyMode(currentMode);
         themeToggleCheckbox.addEventListener('change', (e) => applyMode(e.target.checked ? 'dark' : 'light'));
 
-        // 2. Cores Personalizadas
         const colorDots = document.querySelectorAll('.color-dot');
         let currentColorTheme = localStorage.getItem('colorTheme') || 'default';
-
         function applyColorTheme(colorName) {
-            document.body.setAttribute('data-color-theme', colorName);
-            localStorage.setItem('colorTheme', colorName);
-            
-            colorDots.forEach(dot => {
-                if(dot.getAttribute('data-theme-val') === colorName) dot.classList.add('active');
-                else dot.classList.remove('active');
-            });
+            document.body.setAttribute('data-color-theme', colorName); localStorage.setItem('colorTheme', colorName);
+            const oldDot = document.querySelector('.color-dot.active'); if(oldDot) { oldDot.classList.remove('active'); if(oldDot.querySelector('svg')) oldDot.innerHTML = ''; }
+            const newDot = document.querySelector(`.color-dot[data-theme-val="${colorName}"]`);
+            if(newDot) { newDot.classList.add('active'); newDot.innerHTML = `<svg viewBox="0 0 24 24" style="width: 12px; height: 12px; color: white;"><path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>`; }
             if (myChart) updateUI();
         }
         applyColorTheme(currentColorTheme);
-        
-        colorDots.forEach(dot => {
-            dot.addEventListener('click', (e) => applyColorTheme(e.currentTarget.getAttribute('data-theme-val')));
+        colorDots.forEach(dot => dot.addEventListener('click', (e) => applyColorTheme(e.currentTarget.getAttribute('data-theme-val'))));
+
+        // Interação do Cartão
+        const creditCard = document.getElementById('credit-card');
+        creditCard.addEventListener('mousemove', (e) => {
+            const rect = creditCard.getBoundingClientRect();
+            creditCard.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+            creditCard.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
         });
 
-        // Exportação JPG
-        document.getElementById('btn-export').addEventListener('click', () => {
-            const dashboard = document.getElementById('dashboard-content');
-            const originalScroll = dashboard.style.overflow;
-            dashboard.style.overflow = 'visible'; 
-            html2canvas(dashboard, {
-                scale: 2, useCORS: true,
-                backgroundColor: getComputedStyle(document.body).getPropertyValue('--bg-body').trim()
-            }).then(canvas => {
-                dashboard.style.overflow = originalScroll; 
-                const link = document.createElement('a');
-                link.download = `meu-didin-${monthFilter.value}.jpg`;
-                link.href = canvas.toDataURL('image/jpeg', 0.9);
-                link.click();
-            });
+        // Toast
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div'); toast.className = 'toast';
+            const icon = type === 'success' ? `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--money-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>` : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--money-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
+            toast.innerHTML = `${icon} <span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.animation = 'toastOut 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards'; setTimeout(() => toast.remove(), 400); }, 3000);
+        }
+
+        // Máscara de Moeda
+        amountInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, "");
+            if (value === "") { e.target.value = ""; return; }
+            value = (parseInt(value) / 100).toFixed(2) + ""; value = value.replace(".", ","); value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+            e.target.value = "R$ " + value;
+        });
+
+        function animateValue(obj, start, end, duration, prefix = '') {
+            let startTimestamp = null;
+            const easeOutQuart = t => 1 - (--t) * t * t * t;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const currentVal = start + (end - start) * easeOutQuart(progress);
+                const isNegativeBalance = prefix === '' && currentVal < 0;
+                const displayPrefix = isNegativeBalance ? '- R$ ' : (prefix === '' ? 'R$ ' : prefix);
+                obj.innerText = `${displayPrefix}${Math.abs(currentVal).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                if (progress < 1) window.requestAnimationFrame(step);
+                else obj.innerText = `${displayPrefix}${Math.abs(end).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        /* =========================================
+           A SOLUÇÃO DEFINITIVA DE EXPORTAÇÃO (CLONE)
+           ========================================= */
+        document.getElementById('btn-export').addEventListener('click', async () => {
+            const btn = document.getElementById('btn-export');
+            const originalText = btn.innerHTML;
+            
+            // UI de Carregamento
+            btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation: spin 1s linear infinite;"><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line></svg> <span>Gerando...</span>`;
+            btn.style.pointerEvents = 'none';
+
+            await new Promise(r => setTimeout(r, 100)); // Pequena pausa pra UI atualizar
+
+            // 1. Descobrir a cor de fundo real do tema atual
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            const colorTheme = document.body.getAttribute('data-color-theme');
+            const bgColors = {
+                light: { default: '#f8fafc', indigo: '#f4f6ff', green: '#f2fbf7', pink: '#fff5f7', purple: '#f8f5ff', gold: '#fffbeb', ocean: '#f0fdfa', ruby: '#fff1f2', carbon: '#f5f5f5' },
+                dark: { default: '#09090b', indigo: '#0a0a12', green: '#07100b', pink: '#12080a', purple: '#0d0814', gold: '#140d02', ocean: '#081415', ruby: '#17080b', carbon: '#0a0a0a' }
+            };
+            const exactBgColor = isDark ? bgColors.dark[colorTheme] : bgColors.light[colorTheme];
+
+            // 2. Criar um container fantasma (fora da tela) para montar o Extrato Limpo
+            const exportContainer = document.createElement('div');
+            exportContainer.style.position = 'absolute';
+            exportContainer.style.top = '-10000px'; 
+            exportContainer.style.left = '0';
+            exportContainer.style.width = '1150px'; // Força um layout de computador perfeito
+            exportContainer.style.padding = '40px';
+            exportContainer.style.backgroundColor = exactBgColor; // Previne o fundo preto
+            exportContainer.style.fontFamily = "'Inter', sans-serif";
+            
+            // Passa os temas para herdar as cores
+            exportContainer.setAttribute('data-theme', document.body.getAttribute('data-theme'));
+            exportContainer.setAttribute('data-color-theme', colorTheme);
+
+            const textColor = isDark ? '#f8fafc' : '#0f172a';
+            const monthVal = document.getElementById('month-filter').value;
+
+            // 3. Montar o HTML interno "Limpo" (Sem formulários ou botões de deletar)
+            exportContainer.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; border-bottom: 1px solid rgba(150,150,150,0.2); padding-bottom: 20px;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <svg style="width: 45px; height: 45px; fill: var(--theme-primary);" viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.11.89-2 2-2h14c1.1 0 2 .89 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                        <h1 style="font-family: 'Outfit', sans-serif; font-size: 36px; font-weight: 800; color: ${textColor}; margin:0;">Meu Didin</h1>
+                    </div>
+                    <span style="background: var(--theme-primary); color: white; padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 16px;">Resumo Financeiro: ${monthVal}</span>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: start;">
+                    <div id="export-left-col" style="display: flex; flex-direction: column; gap: 2rem;"></div>
+                    <div id="export-right-col" style="display: flex; flex-direction: column; gap: 2rem;"></div>
+                </div>
+            `;
+
+            document.body.appendChild(exportContainer);
+
+            // Clonar o Cartão de Crédito
+            const cloneCard = document.getElementById('credit-card').cloneNode(true);
+            cloneCard.style.boxShadow = 'none'; // Evita bugs de sombra pesada no PDF
+            document.getElementById('export-left-col').appendChild(cloneCard);
+
+            // Clonar o Gráfico transformando o Canvas em Imagem (Para não bugar no HTML2Canvas)
+            const chartDataURL = document.getElementById('expenseChart').toDataURL('image/png', 1.0);
+            const chartBox = document.createElement('div');
+            chartBox.className = 'card';
+            chartBox.innerHTML = `
+                <h3 class="section-title" style="color: ${textColor}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg> Análise de Gastos</h3>
+                <div style="display: flex; justify-content: center;"><img src="${chartDataURL}" style="max-height: 300px; width: auto;" /></div>
+            `;
+            document.getElementById('export-left-col').appendChild(chartBox);
+
+            // Clonar a Lista de Histórico e remover botões
+            const listCardBox = document.createElement('div');
+            listCardBox.className = 'card';
+            listCardBox.innerHTML = `<h3 class="section-title" style="color: ${textColor}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg> Histórico</h3>`;
+            
+            const cloneList = document.getElementById('list').cloneNode(true);
+            cloneList.style.height = 'auto'; // Mostra todos os itens sem scroll
+            cloneList.style.overflow = 'visible';
+            
+            // Remove as lixeirinhas da versão exportada
+            cloneList.querySelectorAll('.delete-btn').forEach(btn => btn.remove());
+            
+            listCardBox.appendChild(cloneList);
+            document.getElementById('export-right-col').appendChild(listCardBox);
+
+            // 4. Tirar a "Foto" desse Layout Limpo
+            try {
+                const canvas = await html2canvas(exportContainer, { 
+                    scale: 2, // Resolução HD
+                    useCORS: true, 
+                    backgroundColor: exactBgColor,
+                    logging: false
+                });
+
+                const link = document.createElement('a'); 
+                link.download = `Extrato_MeuDidin_${monthVal}.jpg`; 
+                link.href = canvas.toDataURL('image/jpeg', 0.95); 
+                link.click(); 
+                showToast("Extrato salvo com sucesso!", "success");
+
+            } catch (err) {
+                console.error(err);
+                showToast("Erro na captura de tela.", "error");
+            } finally {
+                // 5. Destruir o layout fantasma e voltar o botão ao normal
+                document.body.removeChild(exportContainer);
+                btn.innerHTML = originalText;
+                btn.style.pointerEvents = 'all';
+            }
         });
 
         function updateCategoryOptions() {
-            const currentType = typeSelect.value;
-            categorySelect.innerHTML = '';
-            Object.keys(categoriesData[currentType]).forEach(cat => {
-                const option = document.createElement('option');
-                option.value = cat; option.innerText = cat;
-                categorySelect.appendChild(option);
-            });
+            const currentType = typeSelect.value; categorySelect.innerHTML = '';
+            Object.keys(categoriesData[currentType]).forEach(cat => { const option = document.createElement('option'); option.value = cat; option.innerText = cat; categorySelect.appendChild(option); });
         }
         typeSelect.addEventListener('change', updateCategoryOptions);
 
-        const localStorageTransactions = JSON.parse(localStorage.getItem('transactions'));
-        let transactions = localStorage.getItem('transactions') !== null ? localStorageTransactions : [];
+        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
         const todayStr = new Date().toISOString().split('T')[0];
-        transactions = transactions.map(t => {
-            if(!t.date) t.date = todayStr;
-            if(!t.category) t.category = "Outros";
-            return t;
-        });
+        transactions = transactions.map(t => { if(!t.date) t.date = todayStr; if(!t.category) t.category = "Outros"; return t; });
 
         function setDefaultDates() {
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const day = String(today.getDate()).padStart(2, '0');
-            monthFilter.value = `${year}-${month}`;
-            dateInput.value = `${year}-${month}-${day}`;
+            const today = new Date(); const year = today.getFullYear(); const month = String(today.getMonth() + 1).padStart(2, '0'); const day = String(today.getDate()).padStart(2, '0');
+            monthFilter.value = `${year}-${month}`; dateInput.value = `${year}-${month}-${day}`;
         }
-
         function generateID() { return Math.floor(Math.random() * 100000000); }
-
-        function getFilteredTransactions() {
-            const selectedMonth = monthFilter.value; 
-            return transactions.filter(t => t.date.startsWith(selectedMonth));
-        }
+        function getFilteredTransactions() { const selectedMonth = monthFilter.value; return transactions.filter(t => t.date.startsWith(selectedMonth)); }
 
         function addTransaction(e) {
             e.preventDefault();
-            let transactionAmount = parseFloat(amount.value);
-            if (typeSelect.value === 'expense') transactionAmount = -Math.abs(transactionAmount);
-            else transactionAmount = Math.abs(transactionAmount);
+            let rawAmount = amountInput.value.replace('R$ ', '').replace(/\./g, '').replace(',', '.');
+            let transactionAmount = parseFloat(rawAmount); 
 
-            const transaction = {
-                id: generateID(), text: text.value, amount: transactionAmount,
-                date: dateInput.value, category: categorySelect.value, type: typeSelect.value
-            };
-            transactions.push(transaction); updateLocalStorage(); updateUI(); 
-            text.value = ''; amount.value = ''; text.focus();
+            if (isNaN(transactionAmount) || transactionAmount <= 0) { showToast("Digite um valor válido!", "error"); return; }
+            if (typeSelect.value === 'expense') transactionAmount = -Math.abs(transactionAmount); else transactionAmount = Math.abs(transactionAmount);
+            
+            const transaction = { id: generateID(), text: text.value, amount: transactionAmount, date: dateInput.value, category: categorySelect.value, type: typeSelect.value };
+            transactions.push(transaction); updateLocalStorage(); updateUI(); showToast("Transação adicionada!", "success");
+            text.value = ''; amountInput.value = ''; text.focus();
         }
 
-        function getCategoryIcon(type, categoryName) {
-            if (!categoriesData[type] || !categoriesData[type][categoryName]) return categoriesData.expense["Outros"];
-            return categoriesData[type][categoryName];
-        }
+        function getCategoryIcon(type, categoryName) { return categoriesData[type][categoryName] || categoriesData.expense["Outros"]; }
 
         function addTransactionDOM(transaction) {
-            const tType = transaction.type || (transaction.amount < 0 ? 'expense' : 'income');
-            const isExpense = transaction.amount < 0;
-            const sign = isExpense ? '-' : '+';
-            const item = document.createElement('li');
-            item.classList.add(isExpense ? 'minus' : 'plus');
-            const dateParts = transaction.date.split('-');
-            const formattedDate = `${dateParts[2]}/${dateParts[1]}`;
-            const iconSvg = getCategoryIcon(tType, transaction.category);
-
-            item.innerHTML = `
-                <div class="transaction-details">
-                    <span class="transaction-title">${transaction.text}</span>
-                    <div class="transaction-meta">
-                        <span>${formattedDate}</span>
-                        <span class="category-tag">${iconSvg} ${transaction.category}</span>
-                    </div>
-                </div>
-                <span class="transaction-amount ${isExpense ? 'text-red' : 'text-green'}">
-                    ${sign} R$ ${Math.abs(transaction.amount).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                </span>
-                <button class="delete-btn" data-html2canvas-ignore="true" onclick="removeTransaction(${transaction.id})">Apagar</button>
-            `;
+            const tType = transaction.type || (transaction.amount < 0 ? 'expense' : 'income'); const isExpense = transaction.amount < 0; const sign = isExpense ? '-' : '+';
+            const item = document.createElement('li'); item.classList.add(isExpense ? 'minus' : 'plus');
+            const dateParts = transaction.date.split('-'); const formattedDate = `${dateParts[2]}/${dateParts[1]}`; const iconSvg = getCategoryIcon(tType, transaction.category);
+            item.innerHTML = `<div class="indicator"></div><div class="transaction-details"><span class="transaction-title">${transaction.text}</span><div class="transaction-meta"><span>${formattedDate}</span><span class="category-tag">${iconSvg} ${transaction.category}</span></div></div><span class="transaction-amount ${isExpense ? 'text-red' : 'text-green'}">${sign} R$ ${Math.abs(transaction.amount).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span><button class="delete-btn" onclick="removeTransaction(${transaction.id})" title="Apagar transação"><svg viewBox="0 0 24 24"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>`;
             list.appendChild(item);
         }
 
@@ -568,80 +666,63 @@
             const income = amounts.filter(item => item > 0).reduce((acc, item) => (acc += item), 0);
             const expense = amounts.filter(item => item < 0).reduce((acc, item) => (acc += item), 0) * -1;
 
-            balance.innerText = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-            money_plus.innerText = `+ R$ ${income.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-            money_minus.innerText = `- R$ ${expense.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-            return filteredTransactions;
+            animateValue(balanceDOM, currentBalance, total, 1500, ''); animateValue(moneyPlusDOM, currentIncome, income, 1500, '+ R$ '); animateValue(moneyMinusDOM, currentExpense, expense, 1500, '- R$ ');
+
+            const healthFill = document.getElementById('health-bar-fill'); const healthText = document.getElementById('health-percentage');
+            let percentage = 0; if (income > 0) percentage = Math.min((expense / income) * 100, 100);
+            healthFill.style.width = `${percentage}%`; healthText.innerText = `${percentage.toFixed(0)}%`;
+            if (percentage < 50) healthFill.style.backgroundColor = '#10b981'; else if (percentage < 80) healthFill.style.backgroundColor = '#f59e0b'; else healthFill.style.backgroundColor = '#ef4444'; 
+            currentBalance = total; currentIncome = income; currentExpense = expense;
         }
+
+        const chartShadowPlugin = {
+            id: 'shadowPlugin',
+            beforeDraw: (chart) => {
+                const ctx = chart.ctx; ctx.save();
+                ctx.shadowColor = document.body.getAttribute('data-theme') === 'dark' ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.15)';
+                ctx.shadowBlur = 15; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 10;
+            },
+            afterDraw: (chart) => { chart.ctx.restore(); }
+        };
 
         function updateChart(filteredTransactions) {
             const ctx = document.getElementById('expenseChart').getContext('2d');
             if (myChart) myChart.destroy();
 
-            const expensesByCategory = {};
-            let totalExpense = 0;
-            filteredTransactions.forEach(t => {
-                if (t.amount < 0) {
-                    const absAmount = Math.abs(t.amount);
-                    expensesByCategory[t.category] = (expensesByCategory[t.category] || 0) + absAmount;
-                    totalExpense += absAmount;
-                }
-            });
+            const expensesByCategory = {}; let totalExpense = 0;
+            filteredTransactions.forEach(t => { if (t.amount < 0) { const absAmount = Math.abs(t.amount); expensesByCategory[t.category] = (expensesByCategory[t.category] || 0) + absAmount; totalExpense += absAmount; } });
 
-            const labels = Object.keys(expensesByCategory);
-            const dataValues = Object.values(expensesByCategory);
-            const bgColors = labels.map(label => categoryColors[label] || '#9ca3af');
-            const legendColor = document.body.getAttribute('data-theme') === 'dark' ? '#f8fafc' : '#111827';
+            const labels = Object.keys(expensesByCategory); const dataValues = Object.values(expensesByCategory);
+            const bgColors = labels.map(label => categoryColors[label] || '#94a3b8');
+            const legendColor = document.body.getAttribute('data-theme') === 'dark' ? '#cbd5e1' : '#475569';
+            const chartBgColor = getComputedStyle(document.body).getPropertyValue('--bg-card').trim() || '#ffffff';
 
             if (dataValues.length === 0) {
-                myChart = new Chart(ctx, {
-                    type: 'doughnut',
-                    data: { labels: ['Sem Despesas'], datasets: [{ data: [1], backgroundColor: ['#e5e7eb'], borderWidth: 0 }] },
-                    options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { display: false } } }
-                });
+                myChart = new Chart(ctx, { type: 'doughnut', data: { labels: ['Nenhum Gasto'], datasets: [{ data: [1], backgroundColor: ['rgba(148, 163, 184, 0.1)'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '80%', plugins: { legend: { display: false }, tooltip: { enabled: false } }, animation: { duration: 1500, easing: 'easeOutQuart' } } });
                 return;
             }
 
             myChart = new Chart(ctx, {
-                type: 'doughnut', 
-                data: { labels: labels, datasets: [{ data: dataValues, backgroundColor: bgColors, borderWidth: 0, hoverOffset: 6 }] },
-                options: {
-                    responsive: true, maintainAspectRatio: false, cutout: '65%',
-                    plugins: {
-                        legend: { position: 'right', labels: { color: legendColor, font: { size: 11, family: "'Inter', sans-serif" }, boxWidth: 12 } },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.label || ''; if (label) label += ': ';
-                                    const value = context.raw;
-                                    const percentage = ((value / totalExpense) * 100).toFixed(1) + '%';
-                                    label += `R$ ${value.toLocaleString('pt-BR', {minimumFractionDigits: 2})} (${percentage})`;
-                                    return label;
-                                }
-                            }
-                        }
-                    }
-                }
+                type: 'doughnut', data: { labels: labels, datasets: [{ data: dataValues, backgroundColor: bgColors, borderWidth: 6, borderColor: chartBgColor, borderRadius: 20, hoverOffset: 8 }] }, plugins: [chartShadowPlugin],
+                options: { responsive: true, maintainAspectRatio: false, cutout: '72%', layout: { padding: 15 }, animation: { animateScale: true, animateRotate: true, duration: 1800, easing: 'easeOutQuart' }, plugins: { legend: { position: 'right', labels: { color: legendColor, font: { size: 13, family: "'Inter', sans-serif", weight: '600' }, boxWidth: 12, usePointStyle: true, padding: 20 } }, tooltip: { backgroundColor: document.body.getAttribute('data-theme') === 'dark' ? 'rgba(15, 23, 42, 0.95)' : 'rgba(255, 255, 255, 0.98)', titleColor: document.body.getAttribute('data-theme') === 'dark' ? '#f8fafc' : '#0f172a', bodyColor: document.body.getAttribute('data-theme') === 'dark' ? '#cbd5e1' : '#475569', borderColor: document.body.getAttribute('data-theme') === 'dark' ? '#334155' : 'rgba(0,0,0,0.08)', borderWidth: 1, padding: 16, boxPadding: 8, cornerRadius: 12, titleFont: { family: "'Outfit', sans-serif", size: 14 }, bodyFont: { family: "'Inter', sans-serif", size: 13 }, callbacks: { label: function(context) { let label = context.label || ''; if (label) label += ': '; const value = context.raw; const percentage = ((value / totalExpense) * 100).toFixed(1) + '%'; label += `R$ ${value.toLocaleString('pt-BR', {minimumFractionDigits: 2})} (${percentage})`; return label; } } } } }
             });
         }
 
-        function removeTransaction(id) { transactions = transactions.filter(t => t.id !== id); updateLocalStorage(); updateUI(); }
-        function updateLocalStorage() { localStorage.setItem('transactions', JSON.stringify(transactions)); }
+        function removeTransaction(id) { 
+            const items = list.querySelectorAll('li');
+            items.forEach(item => { if(item.querySelector(`.delete-btn[onclick="removeTransaction(${id})"]`)) { item.style.opacity = '0'; item.style.transform = 'translateY(20px) scale(0.9)'; } });
+            setTimeout(() => { transactions = transactions.filter(t => t.id !== id); updateLocalStorage(); updateUI(); showToast("Transação removida.", "error"); }, 300);
+        }
 
+        function updateLocalStorage() { localStorage.setItem('transactions', JSON.stringify(transactions)); }
         function updateUI() {
-            const filteredTransactions = getFilteredTransactions();
-            list.innerHTML = '';
-            if (filteredTransactions.length === 0) { emptyMsg.style.display = 'block'; } 
-            else {
-                emptyMsg.style.display = 'none';
-                filteredTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
-                filteredTransactions.forEach(addTransactionDOM);
-            }
+            const filteredTransactions = getFilteredTransactions(); list.innerHTML = '';
+            if (filteredTransactions.length === 0) { emptyState.style.display = 'flex'; } 
+            else { emptyState.style.display = 'none'; filteredTransactions.sort((a, b) => new Date(b.date) - new Date(a.date)); filteredTransactions.forEach(addTransactionDOM); }
             updateValues(filteredTransactions); updateChart(filteredTransactions);
         }
 
         function init() { setDefaultDates(); updateCategoryOptions(); updateUI(); }
-
         form.addEventListener('submit', addTransaction);
         monthFilter.addEventListener('change', updateUI); 
         init();
